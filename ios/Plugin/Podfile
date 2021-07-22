@@ -5,8 +5,8 @@ target 'Plugin' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for IonicRunner
-  pod 'Capacitor'
+  pod 'Capacitor', :path => '../../node_modules/@capacitor/ios'
+  pod 'CapacitorCordova', :path => '../../node_modules/@capacitor/ios'
   pod 'JitsiMeetSDK', '3.4.1'
 end
 
@@ -21,6 +21,7 @@ end
 target 'PluginTests' do
   use_frameworks!
 
-  pod 'Capacitor'
+  pod 'Capacitor', :path => '../../node_modules/@capacitor/ios'
+  pod 'CapacitorCordova', :path => '../../node_modules/@capacitor/ios'
   pod 'JitsiMeetSDK', '3.4.1'
 end

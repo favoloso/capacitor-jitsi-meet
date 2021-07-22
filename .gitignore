@@ -1,4 +1,17 @@
-/node_modules/
+# Node
+node_modules/
+dist/
+
+# iOS Xcode config
+ios/Plugin/Plugin.xcworkspace/xcuserdata/leonardo.xcuserdatad
+ios/Plugin/Pods/Pods.xcodeproj/xcuserdata/leonardo.xcuserdatad
+
+# iOS files
+Pods
+Build
+xcuserdata
+
+# Android
 android/capacitor-jitsi-meet/build/
 android/.idea
 .idea/

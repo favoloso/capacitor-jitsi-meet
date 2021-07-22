@@ -1,23 +1,29 @@
 PODS:
-  - Capacitor (0.0.113):
-    - CapacitorCordova (= 0.0.113)
-    - GCDWebServer (~> 3.0)
-  - CapacitorCordova (0.0.113)
-  - GCDWebServer (3.5.2):
-    - GCDWebServer/Core (= 3.5.2)
-  - GCDWebServer/Core (3.5.2)
-  - JitsiMeetSDK (1.21.1)
+  - Capacitor (2.4.7):
+    - CapacitorCordova
+  - CapacitorCordova (2.4.7)
+  - JitsiMeetSDK (3.4.1)
 
 DEPENDENCIES:
-  - Capacitor
-  - JitsiMeetSDK
+  - "Capacitor (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
+  - JitsiMeetSDK (= 3.4.1)
+
+SPEC REPOS:
+  trunk:
+    - JitsiMeetSDK
+
+EXTERNAL SOURCES:
+  Capacitor:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorCordova:
+    :path: "../../node_modules/@capacitor/ios"
 
 SPEC CHECKSUMS:
-  Capacitor: b37060b0b2685257bedbc69e49a54a74ef30fb9a
-  CapacitorCordova: a923a32bc7ad5f1f3d69664ca86ff69580343ed3
-  GCDWebServer: ead88cd14596dd4eae4f5830b8877c87c8728990
-  JitsiMeetSDK: 0f8e9dec4012f38d14015363a3ec17260cf273f6
+  Capacitor: 4cd7b342d5a15b1f6f333d687358953afd7b2d8b
+  CapacitorCordova: 2c9d6e28d9d86c4da087fa2c3537c1841954bb12
+  JitsiMeetSDK: e6d8fe60eb16015f5ab984b37f02e820caed784b
 
-PODFILE CHECKSUM: 6bd6edea43e6f06365b9d37ba199b351d53301ff
+PODFILE CHECKSUM: befd27fd145398c95f1384d59dd4bae5e6e3a694
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.10.1
