@@ -26,18 +26,20 @@ public class JitsiMeetViewController: UIViewController {
     var avatarUrl: String? = nil
     let userLocale = NSLocale.current as NSLocale
     weak var delegate: JitsiMeetViewControllerDelegate?
+    var pipViewCoordinator: PiPViewCoordinator?
 
     public override func viewDidLoad() {
         super.viewDidLoad()
         print("[Jitsi Plugin Native iOS]: JitsiMeetViewController::viewDidLoad");
+        self.view.backgroundColor = .clear;
     }
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
 
         print("[Jitsi Plugin Native iOS]: JitsiMeetViewController::viewDidAppear");
-
-        jitsiMeetView = view as? JitsiMeetView;
+        
+        jitsiMeetView = JitsiMeetView();
         jitsiMeetView?.delegate = self
 
         if  userLocale.countryCode?.contains("CN") ?? false ||
@@ -67,6 +69,24 @@ public class JitsiMeetViewController: UIViewController {
             builder.userInfo = userInfo
         })
         jitsiMeetView.join(options)
+        
+        // Enable jitsimeet view to be a view that can be displayed
+        // on top of all the things, and let the coordinator to manage
+        // the view state and interactions
+        pipViewCoordinator = PiPViewCoordinator(withView: jitsiMeetView)
+        pipViewCoordinator?.configureAsStickyView(withParentView: view)
+
+        // animate in
+        jitsiMeetView.alpha = 0
+        pipViewCoordinator?.show()
+    }
+
+    public override func viewWillTransition(to size: CGSize,
+                                            with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        let rect = CGRect(origin: CGPoint.zero, size: size)
+        pipViewCoordinator?.resetBounds(bounds: rect)
     }
 
     public override func viewWillDisappear(_ animated: Bool) {
@@ -74,8 +94,7 @@ public class JitsiMeetViewController: UIViewController {
 
         print("[Jitsi Plugin Native iOS]: JitsiMeetViewController::leaveConference");
 
-        jitsiMeetView = view as? JitsiMeetView;
-        jitsiMeetView?.delegate = self
+        jitsiMeetView.delegate = self
         jitsiMeetView.leave()
 
     }
@@ -97,6 +116,24 @@ extension JitsiMeetViewController: JitsiMeetViewDelegate {
     @objc public func conferenceTerminated(_ data: [AnyHashable : Any]!) {
         print("[Jitsi Plugin Native iOS]: JitsiMeetViewController::conference left");
         delegate?.onConferenceLeft()
+        DispatchQueue.main.async {
+            self.pipViewCoordinator?.hide() // TODO Aggiungere cleanup
+        }
         self.dismiss(animated: true, completion: nil); // e.g. user ends the call. This is preferred over conferenceLeft to shorten the white screen while exiting the room
+    }
+    
+    @objc public func enterPicture(inPicture data: [AnyHashable : Any]!) {
+        print("[Jitsi iOS] Enter PIP");
+        self.jitsiMeetView.layer.cornerRadius = 8;
+        self.jitsiMeetView.layer.masksToBounds = true;
+        DispatchQueue.main.async {
+            self.pipViewCoordinator?.enterPictureInPicture()
+        }
+//        self.jitsiMeetView.layer.masksToBounds = true;
+//        self.jitsiMeetView.translatesAutoresizingMaskIntoConstraints = false;
+//        self.jitsiMeetView.widthAnchor.constraint(equalToConstant: 120.0).isActive = true;
+//        self.jitsiMeetView.heightAnchor.constraint(equalToConstant: 120.0).isActive = true;
+//        self.jitsiMeetView.rightAnchor.constraint(lessThanOrEqualTo: self.view.rightAnchor, constant: 40.0).isActive = true;
+//        self.jitsiMeetView.bottomAnchor.constraint(lessThanOrEqualTo: self.view.bottomAnchor, constant: 40.0).isActive = true;
     }
 }

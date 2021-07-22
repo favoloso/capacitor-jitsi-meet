@@ -41,6 +41,9 @@ public class Jitsi: CAPPlugin {
         self.jitsiMeetViewController.delegate = self;
 
         DispatchQueue.main.async {
+//            self.bridge.viewController.modalPresentationStyle = .currentContext;
+            self.bridge.viewController.definesPresentationContext = true;
+            self.jitsiMeetViewController.modalPresentationStyle = .overCurrentContext;
             self.bridge.viewController.present(self.jitsiMeetViewController, animated: true, completion: {
                 call.resolve([
                     "success": true
