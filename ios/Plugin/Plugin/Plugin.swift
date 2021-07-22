@@ -44,22 +44,31 @@ public class Jitsi: CAPPlugin {
 //            self.bridge.viewController.modalPresentationStyle = .currentContext;
             self.bridge.viewController.definesPresentationContext = true;
             self.jitsiMeetViewController.modalPresentationStyle = .overCurrentContext;
-            self.bridge.viewController.present(self.jitsiMeetViewController, animated: true, completion: {
-                call.resolve([
-                    "success": true
-                    ])
-            });
+            self.bridge.viewController.addChild(self.jitsiMeetViewController);
+            self.bridge.viewController.view.addSubview(self.jitsiMeetViewController.view);
+            self.jitsiMeetViewController.didMove(toParent: self.bridge.viewController);
+            
+            call.resolve([
+                "success": true
+                ])
+//            self.bridge.viewController.present(self.jitsiMeetViewController, animated: true, completion: {
+//
+//            });
         }
     }
 
     @objc func leaveConference(_ call: CAPPluginCall) {
         self.jitsiMeetViewController.delegate = self;
         DispatchQueue.main.async {
-            self.bridge.viewController.dismiss(animated: true, completion: {
-                call.resolve([
-                    "success": true
-                ])
-            })
+            self.jitsiMeetViewController.willMove(toParent: nil)
+            self.jitsiMeetViewController.view.removeFromSuperview()
+            self.jitsiMeetViewController.removeFromParent()
+            call.resolve([
+                "success": true
+            ])
+//            self.bridge.viewController.dismiss(animated: true, completion: {
+//                
+//            })
         }
     }
 }

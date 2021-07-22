@@ -119,7 +119,9 @@ extension JitsiMeetViewController: JitsiMeetViewDelegate {
         DispatchQueue.main.async {
             self.pipViewCoordinator?.hide() // TODO Aggiungere cleanup
         }
-        self.dismiss(animated: true, completion: nil); // e.g. user ends the call. This is preferred over conferenceLeft to shorten the white screen while exiting the room
+        
+        // TODO Gestire con `willMove` ecc.
+//        self.dismiss(animated: true, completion: nil); // e.g. user ends the call. This is preferred over conferenceLeft to shorten the white screen while exiting the room
     }
     
     @objc public func enterPicture(inPicture data: [AnyHashable : Any]!) {
